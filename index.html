@@ -1,50 +1,196 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+        <title>reveal.js</title>
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/black.css">
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="lib/css/zenburn.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section>
+                    <h1>Giosg SDK</h2>
+                    <h3>Introduction</h3>
+                </section>
+                <section>
+                    <h2>Why GiosgSDK?</h2>
+                    <p>
+                        Keep your front-end in sync with the back-end,
+                        <strong>in real time!</strong>
+                    </p>
+                </section>
+                <section>
+                    <h2>Features</h2>
+                    <ul>
+                        <li>Real-time is completely automatic</li>
+                        <li>100% RESTful</li>
+                        <li><a href="https://gist.github.com/staltz/868e7e9bc2a7b8c1f754" target="_blank">Reactive programming</a></li>
+                        <li>Single source-of-truth for your client</li>
+                        <li>Network failure recovery</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Basic example</h2>
+                    <pre><code data-trim data-noescape class="typescript">
+sdk.streamResource(`/api/v5/users/${userId}`)
+    .subscribe(user => {
+        // Render the user to UI
+    });
+                    </code></pre>
+                    <p>That's it!</p>
+                </section>
+                <section>
+                    <section>
+                        <h2>Collections</h2>
+                        <pre><code data-trim data-noescape class="typescript">
+sdk.streamCollectionArray(`/api/v5/users/${userId}/rooms`)
+    .subscribe(rooms => {
+        // Render the room of arrays to the UI
+    });
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Ordering collections</h2>
+                        <pre><code data-trim data-noescape class="typescript">
+sdk.streamCollectionArray(
+    `/api/v5/users/${userId}/rooms`,
+    { ordering: '-created_at' }
+).subscribe(rooms => {
+    // Render the ordered room of arrays to the UI
+});
+                        </code></pre>
+                    </section>
+                </section>
+                <section>
+                    <h2>Use RxJS for advanced stuff</h2>
+                    <pre><code data-trim data-noescape class="typescript">
+sdk.streamCollection(
+    `/api/v5/users/${userId}/chats`,
+    { ordering: '-created_at', is_ended: false }
+)
+.switchMap(chatsStream =>
+    // Do some magic with RxJS
+    chatsStream
+        .filter(chat => chat['present_member_count'] >= 2)
+        .take(20)
+        .toArray()
+)
+.subscribe(chats => {
+    // We now always have max 20 latest, non-closed chats
+    // or the user, which have least two present members!
+    // And they are always up-to-date!  
+});
+                    </code></pre>
+                    <p>GiosgSDK loads only the required number of chats!</p> 
+                </section>
+                <section>
+                    <h2>Decouple your UI components</h2>
+                    <pre><code data-trim data-noescape class="typescript">
+// UI component 1
+sdk.streamResource("/api/v5/users/xxxxxxxxx")
+    .subscribe(user => {
+        // Render the user to component 1
+    });
+                    </code></pre>
+                    <pre><code data-trim data-noescape class="typescript">
+// UI component 2
+sdk.streamResource("/api/v5/users/xxxxxxxxx")
+    .subscribe(user => {
+        // Render the same user to component 2
+    });
+                    </code></pre>
+                    <p>Both components share the same "stream" internally!</p>
+                    <ul>
+                        <li>No performance hit!</li>
+                        <li>No unnecessary network traffic is made!</li>
+                    </ul>
+                </section>
+                <section>
+                    <section>
+                        <h2>Create resources</h2>
+                        <pre><code data-trim data-noescape class="typescript">
+sdk.postResource(`/api/v5/orgs/${organizationId}/rooms`, {
+    "name": "My Awesome Room",
+    "language_code": "en",
+}).subscribe(room => {
+    // The resource was created successfully!
+}, error => {
+    // Failed to create the resource :(
+});
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Update resources</h2>
+                        <pre><code data-trim data-noescape class="typescript">
+sdk.putResource(`/api/v5/orgs/${organizationId}/rooms/${roomId}`, {
+    "name": "My Fantastic Room",
+    "language_code": "fi",
+}).subscribe(room => {
+    // The resource was updated successfully!
+}, error => {
+    // Failed to update the resource :(
+});
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Update resources partially</h2>
+                        <pre><code data-trim data-noescape class="typescript">
+sdk.patchResource(`/api/v5/orgs/${organizationId}/rooms/${roomId}`, {
+    "language_code": "fi",
+}).subscribe(room => {
+    // The resource was updated successfully!
+}, error => {
+    // Failed to update the resource :(
+});
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Delete resources</h2>
+                        <pre><code data-trim data-noescape class="typescript">
+sdk.deleteResource(`/api/v5/orgs/${organizationId}/rooms/${roomId}`)
+    .subscribe(() => {
+        // The resource was deleted successfully!
+    }, error => {
+        // Failed to delete the resource :(
+    });
+                        </code></pre>
+                    </section>
+                </section>
+            </div>
+        </div>
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
+        <script src="lib/js/head.min.js"></script>
+        <script src="js/reveal.js"></script>
 
-		<script>
-			// More info https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				history: true,
+        <script>
+            // More info https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                history: true,
 
-				// More info https://github.com/hakimel/reveal.js#dependencies
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-				]
-			});
-		</script>
-	</body>
+                // More info https://github.com/hakimel/reveal.js#dependencies
+                dependencies: [
+                    { src: 'plugin/markdown/marked.js' },
+                    { src: 'plugin/markdown/markdown.js' },
+                    { src: 'plugin/notes/notes.js', async: true },
+                    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+                ]
+            });
+        </script>
+    </body>
 </html>
