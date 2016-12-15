@@ -53,7 +53,7 @@ sdk.streamResource(`/api/v5/users/${userId}`)
         // Render the user to UI
     });
                     </code></pre>
-                    <p>That's it!</p>
+                    <p>Real-time is that simple!</p>
                 </section>
                 <section>
                     <section>
@@ -171,6 +171,56 @@ sdk.deleteResource(`/api/v5/orgs/${organizationId}/rooms/${roomId}`)
     });
                         </code></pre>
                     </section>
+                </section>
+                <section>
+                    <h2>Authentication included</h2>
+                    <pre><code data-trim data-noescape class="typescript">
+sdk.auth().subscribe(auth => {
+    console.log(`My user ID is ${auth.user_id}`);
+    console.log(`My organization ID is ${auth.organization_id}`);
+});
+                    </code></pre>
+                    <p>Convenient shortcut:</p>
+                    <pre><code data-trim data-noescape class="typescript">
+sdk.switchUser(
+    userId => sdk.streamResource(`/api/v5/users/${userId}`)
+).subscribe(user => {
+    // Render the authenticated user to UI
+});
+                    </code></pre>
+                </section>
+                <section>
+                    <h1>Planned features</h1>
+                    <h3>Coming soon!</h3>
+                </section>
+                <section>
+                    <h2>Local caching</h2>
+                    <p>Store recently used resources &amp; collections to local storage</p>
+                    <p>➔ Better UX</p>
+                    <ul>
+                        <li>Show any cached resource(s) immediately!</li>
+                        <li>Refresh with up-to-date state once loaded</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Optimistic resource altering</h2>
+                    <p>➔ Better UX</p>
+                    <ul>
+                        <li>Apply changes to resources immediately!</li>
+                        <li>The actual HTTP request is made in background</li>
+                        <li>Automatically roll back if the action fails!</li>
+                        <li>Optional feature, if data validity is more important</li>
+                        <li>Inspired by <a href="https://www.meteor.com/" target="_blank">Meteor</a></li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Inter-iframe communication</h2>
+                    <ul>
+                        <li>One frame has a "master" GiosgSDK instance</li>
+                        <li>Other frames have identical GiosgSDK interface</li>
+                        <li>Actual network traffic is done via master</li>
+                        <li>Per-frame authorization</li>
+                    </ul>
                 </section>
             </div>
         </div>
