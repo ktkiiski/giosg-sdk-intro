@@ -56,6 +56,20 @@ sdk.streamResource(`/api/v5/users/${userId}`)
                     <p>Real-time is that simple!</p>
                 </section>
                 <section>
+                    <h2>Unsubscribe</h2>
+                    <p>Subscribe when the UI component is created:</p>
+                    <pre><code data-trim data-noescape class="typescript">
+const subscription = sdk.streamResource(`/api/v5/users/${userId}`)
+    .subscribe(user => {
+        // Render the user to UI
+    });
+                    </code></pre>
+                    <p>Unsubscribe when the UI component is destroyed:</p>
+                    <pre><code data-trim data-noescape class="typescript">
+subscription.unsubscribe();
+                    </code></pre>
+                </section>
+                <section>
                     <section>
                         <h2>Collections</h2>
                         <pre><code data-trim data-noescape class="typescript">
@@ -92,12 +106,12 @@ sdk.streamCollection(
         .toArray()
 )
 .subscribe(chats => {
-    // We now always have max 20 latest, non-closed chats
-    // or the user, which have least two present members!
-    // And they are always up-to-date!  
+    // We now have user's max 20 latest, non-closed
+    // chats, with least two present members!
+    // And they are always up-to-date!
 });
                     </code></pre>
-                    <p>GiosgSDK loads only the required number of chats!</p> 
+                    <p>GiosgSDK loads only the required number of chats!</p>
                 </section>
                 <section>
                     <h2>Decouple your UI components</h2>
