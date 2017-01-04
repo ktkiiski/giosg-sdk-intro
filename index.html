@@ -31,7 +31,7 @@
                 <section>
                     <h2>Why GiosgSDK?</h2>
                     <p>
-                        Keep your front-end in sync with the back-end,
+                        Keep all your UIs up-to-date
                         <strong>in real time!</strong>
                     </p>
                 </section>
@@ -75,7 +75,7 @@ subscription.unsubscribe();
                         <pre><code data-trim data-noescape class="typescript">
 sdk.streamCollectionArray(`/api/v5/users/${userId}/rooms`)
     .subscribe(rooms => {
-        // Render the room of arrays to the UI
+        // Render the array of rooms to the UI
     });
                         </code></pre>
                     </section>
@@ -86,7 +86,18 @@ sdk.streamCollectionArray(
     `/api/v5/users/${userId}/rooms`,
     { ordering: '-created_at' }
 ).subscribe(rooms => {
-    // Render the ordered room of arrays to the UI
+    // Render the ordered array of rooms to the UI
+});
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Back-end filtering</h2>
+                        <pre><code data-trim data-noescape class="typescript">
+sdk.streamCollectionArray(
+    `/api/v5/users/${userId}/rooms`,
+    { is_domain: true }
+).subscribe(domainRooms => {
+    // Only filtered rooms are loaded from the server!
 });
                         </code></pre>
                     </section>
