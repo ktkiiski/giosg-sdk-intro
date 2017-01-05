@@ -31,7 +31,7 @@
                 <section>
                     <h2>Why GiosgSDK?</h2>
                     <p>
-                        Keep all your UIs up-to-date
+                        Keep your UI up-to-date
                         <strong>in real time!</strong>
                     </p>
                 </section>
@@ -42,7 +42,9 @@
                         <li>100% RESTful</li>
                         <li><a href="https://gist.github.com/staltz/868e7e9bc2a7b8c1f754" target="_blank">Reactive programming</a></li>
                         <li>Single source-of-truth for your client</li>
-                        <li>Network failure recovery</li>
+                        <li>Error recovery</li>
+                        <li>Minimal real-time notifications delivered</li>
+                        <li>Authentication</li>
                     </ul>
                 </section>
                 <section>
@@ -215,15 +217,23 @@ sdk.switchUser(
                     </code></pre>
                 </section>
                 <section>
-                    <h1>How it works?</h1>
-                </section>
-                <section>
-                    <h2>Architecture</h2>
+                    <h2>How it works?</h2>
                     <img class="stretch" src="https://docs.google.com/drawings/d/1RQB_BP4wuiRbCGr_db_z1jL9jseamsVKgNZyavjmF9U/pub?w=1118&amp;h=444">
                 </section>
                 <section>
-                    <h1>Planned features</h1>
-                    <h3>Coming soon!</h3>
+                    <h1>Coming soon!</h1>
+                </section>
+                <section>
+                    <h2>Optimistic resource altering</h2>
+                    <p>Work in progress!</p>
+                    <p>➔ Better UX</p>
+                    <ul>
+                        <li>Apply changes to resources immediately!</li>
+                        <li>The actual HTTP request is made in background</li>
+                        <li>Automatically roll back if the action fails!</li>
+                        <li>Optional feature, if data validity is more important</li>
+                        <li>Inspired by <a href="https://www.meteor.com/" target="_blank">Meteor</a></li>
+                    </ul>
                 </section>
                 <section>
                     <h2>Local caching</h2>
@@ -235,17 +245,6 @@ sdk.switchUser(
                     </ul>
                 </section>
                 <section>
-                    <h2>Optimistic resource altering</h2>
-                    <p>➔ Better UX</p>
-                    <ul>
-                        <li>Apply changes to resources immediately!</li>
-                        <li>The actual HTTP request is made in background</li>
-                        <li>Automatically roll back if the action fails!</li>
-                        <li>Optional feature, if data validity is more important</li>
-                        <li>Inspired by <a href="https://www.meteor.com/" target="_blank">Meteor</a></li>
-                    </ul>
-                </section>
-                <section>
                     <h2>Inter-iframe communication</h2>
                     <ul>
                         <li>One frame has a "master" GiosgSDK instance</li>
@@ -253,6 +252,10 @@ sdk.switchUser(
                         <li>Actual network traffic is done via master</li>
                         <li>Per-frame authorization</li>
                     </ul>
+                </section>
+                <section>
+                    <h2>Thanks!</h2>
+                    <h4>Any comments?</h4>
                 </section>
             </div>
         </div>
